@@ -1297,7 +1297,7 @@ local Classes = {} do
 				end
 
 				if ( typeof(s_maximum) ~= 'number' ) then
-					s_maximum = 100 
+					s_maximum = 500 
 				end
 
 				if ( s_exponential ~= true ) then
