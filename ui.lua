@@ -1285,7 +1285,7 @@ local Classes = {} do
 				--local s_flag = settings.Flag
 
 				if ( typeof(s_value) ~= 'number' ) then
-					s_value = 50 
+					s_value = 500
 				end
 
 				if ( typeof(s_step) ~= 'number' ) then 
