@@ -351,32 +351,48 @@ local Classes = {} do
 			end
 
 			function Window:Minimize() 
-				self._minimized = true 
+                self._minimized = true 
 
-				local minimizeCheck = self.connections.minimizeCheck
-				if ( minimizeCheck ) then
-					minimizeCheck:Disconnect()
-				end
+                local minimizeCheck = self.connections.minimizeCheck
+                if ( minimizeCheck ) then
+                    minimizeCheck:Disconnect()
+                end
 
-				local window = self.instances.window 
-				window:SetAttribute('_OldPosition', window.Position)
-				tween.Smooth(window, {
-					Position = UDim2.new(window.Position.X, UDim.new(1.5, 0))
-				})
+                local window = self.instances.window 
+                window:SetAttribute('_OldPosition', window.Position)
+                tween.Smooth(window, {
+                    Position = UDim2.new(window.Position.X, UDim.new(1.5, 0))
+                })
 
-				self.connections.minimizeCheck = inputService.InputBegan:Connect(function(input: InputObject) 
-					if ( input.KeyCode == Enum.KeyCode.RightShift ) then
-						self:Unminimize()
-					end
-				end)
+                self.connections.minimizeCheck = inputService.InputBegan:Connect(function(input: InputObject) 
+                    if ( input.KeyCode == Enum.KeyCode.RightShift ) then
+                      if self.connections.minimizeCheck == false then
+                        self:Unminimize()
+								end
+                    end
+                end)
 
-				Library:Notify({
-					Title = 'Window minimized';
-					Text = 'Press RightShift to refocus the window';
-					Duration = 3;
-					Silent = true;
-				})
-			end
+                Library:Notify({
+                    Title = 'Window minimized';
+                    Text = 'Press RightShift to refocus the window';
+                    Duration = 3;
+                    Silent = true;
+                })
+            end
+
+            function Window:Unminimize() 
+                self._minimized = false 
+
+                local window = self.instances.window 
+                tween.Smooth(window, {
+                    Position = window:GetAttribute('_OldPosition')
+                })
+
+                local minimizeCheck = self.connections.minimizeCheck
+                if ( minimizeCheck ) then
+                    minimizeCheck:Disconnect()
+                end
+            end
 
 			function Window:Unminimize() 
 				self._minimized = false 
