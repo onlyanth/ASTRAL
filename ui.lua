@@ -3033,7 +3033,7 @@ function Library:CreateWindow(options: {})
 	local s_charviewerEnabled = options.CharViewerEnabled
 
 	if ( typeof(s_title) ~= 'string' ) then
-		s_title = 'EVICTEDLIB'
+		s_title = 'ASTRAL1'
 	end
 
 	if ( typeof(s_buildPrefix) ~= 'string' ) then
