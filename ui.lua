@@ -1,4 +1,4 @@
--- EvictedLib v0.1.1
+-- EvictedLib v0.2.0
 -- By topit 
 -- June -> July 2023 
 
@@ -9,6 +9,7 @@ local runService = game:GetService('RunService')
 local inputService = game:GetService('UserInputService')
 local playerService = game:GetService('Players')
 local tweenService = game:GetService('TweenService')
+local httpService = game:GetService('HttpService')
 
 -- Wait for the game to load  
 if ( not game:IsLoaded() ) then
@@ -101,7 +102,7 @@ local function round(value, places)
 end
 
 -- Preparation
-local librarySource = game:GetObjects('rbxassetid://13949667049')[1]
+local librarySource = game:GetObjects('rbxassetid://13990969959')[1]
 local libraryObjects = librarySource.Objects
 
 librarySource.Parent = (gethui and gethui()) or (get_hidden_ui and get_hidden_ui()) or ( game.CoreGui )
@@ -115,6 +116,7 @@ Library.__index = Library
 
 Library._notifs = {}
 Library._windows = {} 
+Library._keybinds = {} 
 Library.connections = {} 
 
 -- Create and initialize element classes
@@ -282,6 +284,11 @@ local Classes = {} do
 					end
 				end
 
+				-- config related
+				do 
+					self:SaveConfig('default.json')
+				end
+
 				return self
 			end
 
@@ -346,20 +353,50 @@ local Classes = {} do
 			function Window:Minimize() 
 				self._minimized = true 
 
-				--[[Library:Notify({
+				local minimizeCheck = self.connections.minimizeCheck
+				if ( minimizeCheck ) then
+					minimizeCheck:Disconnect()
+				end
+
+				local window = self.instances.window 
+				window:SetAttribute('_OldPosition', window.Position)
+				tween.Smooth(window, {
+					Position = UDim2.new(window.Position.X, UDim.new(1.5, 0))
+				})
+
+				self.connections.minimizeCheck = inputService.InputBegan:Connect(function(input: InputObject) 
+					if ( input.KeyCode == Enum.KeyCode.RightShift ) then
+						self:Unminimize()
+					end
+				end)
+
+				Library:Notify({
 					Title = 'Window minimized';
-					Message = 'Press RightShift to refocus the window';
-					Duration = 5;
-				})]]
+					Text = 'Press RightShift to refocus the window';
+					Duration = 3;
+					Silent = true;
+				})
 			end
 
 			function Window:Unminimize() 
 				self._minimized = false 
+
+				local window = self.instances.window 
+				tween.Smooth(window, {
+					Position = window:GetAttribute('_OldPosition')
+				})
+
+				local minimizeCheck = self.connections.minimizeCheck
+				if ( minimizeCheck ) then
+					minimizeCheck:Disconnect()
+				end
 			end
 
-			function Window:_ClearViewerConns() 
+			--- Panels 
+			-- Char viewer
+			function Window:_ClearCharViewerConns() 
 				local connections = self.connections
-				for _, updater in ipairs({ 'viewerSwipeUpdater', 'viewerSwipeAnimator', 'viewerDragUpdater', 'viewerDragAnimator'}) do 
+				for _, updater in ipairs({ 'charViewerSwipeUpdater', 'charViewerSwipeAnimator', 'charViewerDragUpdater', 'charViewerDragAnimator'}) do 
 					if ( connections[updater] ) then
 						connections[updater]:Disconnect() 
 					end
@@ -368,32 +405,38 @@ local Classes = {} do
 				return self 
 			end
 
+			function Window:IsCharViewerOpen() 
+				return self._charviewerPanelOpen
+			end
+
 			function Window:ShowCharViewer()
-				self:_ClearViewerConns()
+				self._charviewerPanelOpen = true 
+				self:_ClearCharViewerConns()
 
 				local charviewer_container = self.instances.charviewer_container
-				local xPosition = charviewer_container:GetAttribute('_XPosition')
+				--local side = charviewer_container:GetAttribute('_Side')
 
-				charviewer_container.Position = UDim2.fromScale(xPosition, 2)
+				charviewer_container.Position = UDim2.fromScale(1.05, 2)
 
 				charviewer_container.Visible = true 
 				tween.Smooth(charviewer_container, {
-					Position = UDim2.fromScale(xPosition, 0.03)
+					Position = UDim2.fromScale(1.05, 0.03)
 				}, 0.5)
 
 				return self
 			end
 
 			function Window:HideCharViewer() 
-				self:_ClearViewerConns()
+				self._charviewerPanelOpen = false
+				self:_ClearCharViewerConns()
 
 				local charviewer_container = self.instances.charviewer_container
-				local xPosition = charviewer_container:GetAttribute('_XPosition')
+				-- local xPosition = charviewer_container:GetAttribute('_XPosition')
 
-				charviewer_container.Position = UDim2.fromScale(xPosition, 0.03)
+				charviewer_container.Position = UDim2.fromScale(1.05, 0.03)
 
 				tween.Smooth(charviewer_container, {
-					Position = UDim2.fromScale(xPosition, 2)
+					Position = UDim2.fromScale(1.05, 2)
 				}, 0.5).Completed:Connect(function()
 					charviewer_container.Visible = false
 				end)
@@ -419,6 +462,7 @@ local Classes = {} do
 				local warningMessage = instances.charviewer_warning 
 				local viewport = instances.charviewer_viewport 
 
+				viewport['#worldmodel']:ClearAllChildren()
 
 				character.Archivable = true
 				local clone = character:Clone()
@@ -431,8 +475,9 @@ local Classes = {} do
 				end
 
 				self._viewModel = clone
-
-				clone:SetAttribute('_BaseCFrame', CFrame.new(0, 9, 0) * CFrame.fromOrientation(math.rad(-8), math.rad(180), 0))
+				
+				local offset = clone:GetAttribute('_Offset') or Vector3.zero
+				clone:SetAttribute('_BaseCFrame', CFrame.new(0, 9, 0) * CFrame.fromOrientation(math.rad(-8), math.rad(180), 0) + offset)
 				clone:PivotTo(clone:GetAttribute('_BaseCFrame'))
 
 				clone.Parent = viewport['#worldmodel']
@@ -466,14 +511,12 @@ local Classes = {} do
 
 						self.connections.viewerThread = task.spawn(function() -- this doesnt fully work, no idea why, fuck roblox animation system
 							while true do
-								for i = 1, math.random(3, 5) do 
-									anim1.Looped = false
-									anim1:Play(0.1)
-									anim1.Ended:Wait()
+								for i = 1, math.random(3, 6) do 
+									anim1:Play(0.1, 2)
+									anim1.DidLoop:Wait()
 								end
-								
-								anim2.Looped = false
-								anim2:Play(0.1)
+
+								anim2:Play(0.1, 5)
 								anim2.Ended:Wait()
 							end
 						end)
@@ -483,7 +526,301 @@ local Classes = {} do
 				return self 
 			end
 
-			-- Creates and returns a new window object
+			-- Config viewer
+			function Window:_ClearConfigViewerConns() 
+				local connections = self.connections
+				for _, updater in ipairs({ 'configViewerDragUpdater', 'configViewerDragAnimator' }) do 
+					if ( connections[updater] ) then
+						connections[updater]:Disconnect() 
+					end
+				end
+
+				return self 
+			end
+
+			function Window:IsConfigViewerOpen() 
+				return self._configviewerPanelOpen
+			end
+
+			function Window:ShowConfigViewer()
+				self._configviewerPanelOpen = true 
+				self:_ClearConfigViewerConns()
+
+				local configviewer_container = self.instances.configviewer_container
+
+				configviewer_container.Position = UDim2.fromScale(-0.45, 2)
+
+				configviewer_container.Visible = true 
+				tween.Smooth(configviewer_container, {
+					Position = UDim2.fromScale(-0.45, 0.03)
+				}, 0.5)
+
+				return self
+			end
+
+			function Window:HideConfigViewer() 
+				self._configviewerPanelOpen = false 
+				self:_ClearConfigViewerConns()
+
+				local configviewer_container = self.instances.configviewer_container
+
+				configviewer_container.Position = UDim2.fromScale(-0.45, 0.03)
+
+				tween.Smooth(configviewer_container, {
+					Position = UDim2.fromScale(-0.45, 2)
+				}, 0.5).Completed:Connect(function()
+					configviewer_container.Visible = false
+				end)
+
+				return self
+			end
+
+			function Window:SaveConfig(configName: string) 
+				local folderName = self:GetFolderName()
+				local totalName = string.format('%s/%s', folderName, configName)
+
+				if ( isfolder(folderName) == false ) then
+					makefolder(folderName)
+				end
+
+				local contents = {}
+				for _, category in self._categories do
+					for _, menu in category._menus do
+						for _, section in menu._sections do
+							for _, module in section._modules do
+								if ( module.GetCfgValue ) then 
+									contents[module.flag] = module:GetCfgValue()
+								end
+							end
+						end
+					end
+				end  
+
+				writefile(totalName, httpService:JSONEncode(contents))
+
+				return self
+			end
+
+			function Window:LoadConfig(configName: string) 
+				local folderName = self:GetFolderName()
+				local totalName = string.format('%s/%s', folderName, configName)
+
+				if ( isfolder(folderName) == false ) then
+					return false, 'Config folder not found'
+				end
+
+				if ( isfile(totalName) == false ) then
+					return false, 'Config file not found'
+				end
+
+				local contents = readfile(totalName)
+				local success, config = pcall(function() return httpService:JSONDecode(contents) end)
+				if ( not success ) then
+					return false, 'Couldn\'t parse JSON file'
+				end
+
+				if ( contents == '{}' ) then
+					return false, 'Config file is empty - there\'s nothing to load!'
+				end
+
+				for _, category in self._categories do
+					for _, menu in category._menus do
+						for _, section in menu._sections do
+							for _, module in section._modules do
+								local value = config[module.flag]
+								if ( value and module.SetCfgValue ) then
+									module:SetCfgValue(value)
+								end
+							end
+						end
+					end
+				end  
+
+				return self
+			end
+
+			function Window:_RenderCfgFoundMenu(clearAll: boolean) 
+				local folderName = self:GetFolderName()
+
+				if ( isfolder(folderName) == false ) then
+					return false, 'Folder not found'
+				end
+
+				local files = listfiles(folderName)
+				local listMenu = self.instances.configviewer_found_menu['#menu']
+
+				local template = listMenu['#template']
+
+
+				if ( # files == 0 ) then
+					listMenu['#warning'].Visible = true 
+				else
+					listMenu['#warning'].Visible = false 
+				end
+
+				local selectedConfig = false
+				local existingConfigs = {} 
+
+				if ( clearAll ) then 
+					for _, entry in listMenu:GetChildren() do
+						if ( entry:GetAttribute('_IsEntry') == true ) then
+							entry:Destroy()
+						end 
+					end
+				else
+					for _, entry in listMenu:GetChildren() do
+						if ( entry:GetAttribute('_IsEntry') == true ) then
+							local config = entry['#button']['#title'].Text 
+
+							table.insert(existingConfigs, config) -- mark config as previously existing 
+
+							if ( table.find(files, config) == nil ) then
+								-- this config was deleted since it's no longer found
+
+								if ( entry:GetAttribute('_Selected') == true and selectedConfig == config ) then
+									selectedConfig = false
+								end
+								entry:Destroy()
+							end
+						end 
+					end
+				end
+
+				-- create new configs
+				for index, file in files do
+					if ( table.find(existingConfigs, file ) ) then
+						-- this is already created, continue 
+						continue
+					end
+
+					local config = template:Clone()
+					local button = config['#button']
+					local title = button['#title']
+					title.Text = file
+
+					local hovered = false
+
+					config.MouseEnter:Connect(function()
+						hovered = true 
+						if ( config:GetAttribute('_Selected') == true ) then
+							tween.Quick(button, {
+								BackgroundColor3 = button:GetAttribute('_EnabledHoverColor')
+							})
+						else
+							tween.Quick(button, {
+								BackgroundColor3 = button:GetAttribute('_DisabledHoverColor')
+							})
+						end
+					end)
+
+					config.MouseLeave:Connect(function() 
+						hovered = false 
+						if ( config:GetAttribute('_Selected') == true ) then
+							tween.Quick(button, {
+								BackgroundColor3 = button:GetAttribute('_EnabledColor')
+							})
+						else
+							tween.Quick(button, {
+								BackgroundColor3 = button:GetAttribute('_DisabledColor')
+							})
+						end
+					end)
+
+					local function click() 
+						for _, entry in listMenu:GetChildren() do 
+							if ( entry:GetAttribute('_IsEntry') == true and entry ~= config ) then
+								tween.Quick(entry['#button'], {
+									BackgroundColor3 = entry['#button']:GetAttribute('_DisabledColor')
+								})
+
+								entry:SetAttribute('_Selected', false)
+							end
+						end
+
+						tween.Quick(button, {
+							BackgroundColor3 = hovered and button:GetAttribute('_EnabledHoverColor') or button:GetAttribute('_EnabledColor')
+						})
+						config:SetAttribute('_Selected', true)
+					end
+
+					button.MouseButton1Click:Connect(click)
+
+					config.Visible = true 
+					config.Name = file 
+					config:SetAttribute('_Selected', false)
+					config:SetAttribute('_IsEntry', true)
+					config.Parent = listMenu
+
+					if ( file == selectedConfig ) then
+						click()
+					end
+				end
+			end
+
+			function Window:GetFolderName() 
+				return self._title:gsub('[-_ !?@%(%)%%#%>%<%/\\%[%]]', '_') .. '_Configs' -- this should handle some unsafe characters
+			end
+
+
+			-- BindPrompt related
+			function Window:_HideBindPrompt(moduleName: string, keybind: string) 
+				local instances = self.instances
+
+				local bindscreen = instances.bindscreen
+				local bindscreen_message = bindscreen['#message']
+				local bindscreen_title = bindscreen['#title']
+				local bindscreen_background = bindscreen['#background']
+
+				--bindscreen_background.BackgroundTransparency = 1
+				--bindscreen_title.TextTransparency = 1 
+				--bindscreen.Visible = true 
+
+				bindscreen_title.Text = string.format('Bound "%s" to %s', moduleName, keybind)
+
+				task.delay(0.4, function()
+
+					tween.Smooth(bindscreen_background, {
+						BackgroundTransparency = 1 
+					}).Completed:Connect(function() 
+						bindscreen.Visible = false 
+					end)
+
+					tween.Smooth(bindscreen_title, {
+						TextTransparency = 1 
+					})
+				end)
+
+				return self
+			end
+
+			function Window:_ShowBindPrompt(moduleName: string) 
+				local instances = self.instances
+
+				local bindscreen = instances.bindscreen
+				local bindscreen_message = bindscreen['#message']
+				local bindscreen_title = bindscreen['#title']
+				local bindscreen_background = bindscreen['#background']
+
+				bindscreen_background.BackgroundTransparency = 1
+				bindscreen_title.TextTransparency = 1 
+				bindscreen.Visible = true 				
+
+				bindscreen_title.Text = string.format('Binding key for "%s"', moduleName)
+
+				tween.Smooth(bindscreen_background, {
+					BackgroundTransparency = 0.1
+				})
+
+				tween.Smooth(bindscreen_title, {
+					TextTransparency = 0
+				})
+
+				return self
+			end
+
+			-- Other
+
+
 			function Window.new(parent, settings: {}) 
 				local self = setmetatable({}, Window)
 
@@ -491,11 +828,14 @@ local Classes = {} do
 				self.instances = {} 
 				self.connections = {} 
 				self.parent = parent 
+				self.flag = settings.Flag
 
 				-- Private properties
 				self._draggable = settings.Draggable
 				self._resizable = settings.Resizable
 				self._categories = {} 
+
+				self._title = settings.Title 
 
 				self._loader = settings.Loader 
 				self._loadTime = settings.LoadTime
@@ -504,6 +844,12 @@ local Classes = {} do
 
 				self._retainToggles = settings.RetainToggles 
 				self._destroyCallback = settings.DestroyCallback
+
+				self._charviewerPanelOpen = false 
+				self._configPanelOpen = false 
+				self._changelogPanelOpen = false 
+				self._settingsPanelOpen = false 
+
 
 				-- Instance declaration
 				do 
@@ -517,6 +863,7 @@ local Classes = {} do
 					local control_container = window['#menu-container']['#header-container']['#control-container']
 					local loader_container = window['#loader-container']
 					local charviewer_container = window['#charviewer-container']
+					local configviewer_container = window['#configviewer-container']
 
 					instances.title = title_container['#title']
 					instances.build = title_container['#build']
@@ -524,9 +871,13 @@ local Classes = {} do
 					instances.page_container = window['#menu-container']['#content-container']['#page-container']
 					instances.userinfo = window['#sidebar-container']['#userinfo']['#content-container']
 					instances.header = window['#menu-container']['#header-container']
+
 					instances.control_close = control_container['#control-close']
 					instances.control_minimize = control_container['#control-minimize']
 					instances.control_settings = control_container['#control-settings']
+					instances.control_config = control_container['#control-config']
+					instances.control_changelog = control_container['#control-changelog']
+					instances.control_charviewer = control_container['#control-charviewer']
 
 					instances.loader_container = loader_container
 					instances.loader_button = loader_container['#button']
@@ -535,9 +886,15 @@ local Classes = {} do
 					instances.loader_title = loader_container['#title']
 					instances.loader_message = loader_container['#message']
 
+					instances.bindscreen = window['#bind-screen']
+
 					instances.charviewer_container = charviewer_container
 					instances.charviewer_viewport = charviewer_container['#viewport']
 					instances.charviewer_warning = charviewer_container['#warning']
+
+					instances.configviewer_container = configviewer_container
+					instances.configviewer_found_menu = configviewer_container['#found-container']
+					instances.configviewer_save_menu = configviewer_container['#save-container']
 				end
 
 				-- Instance modification
@@ -555,7 +912,7 @@ local Classes = {} do
 						end
 					end
 
-					-- Loader
+					-- Loader and BindScreens
 					do 
 						if ( settings.Loader ) then 
 							instances.loader_container.Visible = true
@@ -563,6 +920,8 @@ local Classes = {} do
 						else
 							instances.loader_container.Visible = false 
 						end
+
+						instances.bindscreen.Visible = false 
 					end
 
 					-- Userinfo
@@ -607,6 +966,7 @@ local Classes = {} do
 										ImageTransparency = 1
 									}, 0.2).Completed:Connect(function() 
 										userIcon.Image = 'rbxassetid://13292509590'
+										userIcon.ImageColor3 = userIcon:GetAttribute('_IconTint')
 
 										tween.Exp(userIcon, {
 											ImageTransparency = 0
@@ -651,6 +1011,7 @@ local Classes = {} do
 									userLabel.Text = localPlayer.Name
 									userLabel.FontFace = fontNormal
 									userIcon.Image = userThumbnail
+									userIcon.ImageColor3 = userIcon:GetAttribute('_IconNormal')
 
 									tween.Exp(userIcon, {
 										ImageTransparency = 0 
@@ -666,6 +1027,7 @@ local Classes = {} do
 
 						userLabel.Text = localPlayer.Name
 						userIcon.Image = userThumbnail
+						userIcon.ImageColor3 = userIcon:GetAttribute('_IconNormal')
 
 						-- rbxassetid://13292509590
 
@@ -685,8 +1047,7 @@ local Classes = {} do
 						local charviewer_container = instances.charviewer_container
 						local charviewer_viewport = instances.charviewer_viewport
 
-						charviewer_container:SetAttribute('_XPosition', 1.1)
-						charviewer_container.Position = UDim2.fromScale(1.1, 2)
+						charviewer_container.Position = UDim2.fromScale(1.05, 2)
 						charviewer_container.Visible = false
 
 						local targetRotation = 0 
@@ -711,8 +1072,8 @@ local Classes = {} do
 								local s_modelPos = self._viewModel:GetAttribute('_BaseCFrame')
 
 								-- check for existing connections and disconnect them so nothing leaks 
-								local swipeUpdater = self.connections.viewerSwipeUpdater
-								local swipeAnimator = self.connections.viewerSwipeAnimator 
+								local swipeUpdater = self.connections.charViewerSwipeUpdater
+								local swipeAnimator = self.connections.charViewerSwipeAnimator 
 
 								if ( swipeUpdater ) then
 									swipeUpdater:Disconnect()
@@ -721,13 +1082,13 @@ local Classes = {} do
 									swipeAnimator:Disconnect()
 								end
 
-								self.connections.viewerSwipeAnimator = runService.Heartbeat:Connect(function(deltaTime)
+								self.connections.charViewerSwipeAnimator = runService.Heartbeat:Connect(function(deltaTime)
 									currentRotation = lerp(currentRotation, targetRotation, 1 - math.exp(-6 * deltaTime))
 
 									self._viewModel:PivotTo(s_modelPos * CFrame.fromOrientation(0, math.rad(currentRotation), 0))
 								end)
 
-								self.connections.viewerSwipeUpdater = inputService.InputChanged:Connect(function(input) 
+								self.connections.charViewerSwipeUpdater = inputService.InputChanged:Connect(function(input) 
 									if ( input.UserInputType.Name == 'MouseMovement' ) then
 										local c_mousePos = Vector2.new(input.Position.X, input.Position.Y) -- current mouse position 
 
@@ -746,8 +1107,8 @@ local Classes = {} do
 							if ( input.UserInputType.Name == 'MouseButton1' ) then
 								viewerSwiping = false 
 
-								local swipeUpdater = self.connections.viewerSwipeUpdater
-								local swipeAnimator = self.connections.viewerSwipeAnimator 
+								local swipeUpdater = self.connections.charViewerSwipeUpdater
+								local swipeAnimator = self.connections.charViewerSwipeAnimator 
 
 								if ( swipeUpdater ) then
 									swipeUpdater:Disconnect()
@@ -765,7 +1126,7 @@ local Classes = {} do
 							end
 						end)
 
-
+						--[[
 						local targetPosition
 
 						charviewer_container.InputBegan:Connect(function(input) 
@@ -779,8 +1140,8 @@ local Classes = {} do
 								local s_windowPos = instances.window.AbsolutePosition
 								local s_mousePos = Vector2.new(input.Position.X, input.Position.Y)
 
-								local dragUpdater = self.connections.viewerDragUpdater
-								local dragAnimator = self.connections.viewerDragAnimator 
+								local dragUpdater = self.connections.charViewerDragUpdater
+								local dragAnimator = self.connections.charViewerDragAnimator 
 
 								if ( dragUpdater ) then
 									dragUpdater:Disconnect()
@@ -792,13 +1153,13 @@ local Classes = {} do
 								targetPosition = s_basePos - s_windowPos
 
 								-- connect updater functions
-								self.connections.viewerDragAnimator = runService.Heartbeat:Connect(function(deltaTime)
+								self.connections.charViewerDragAnimator = runService.Heartbeat:Connect(function(deltaTime)
 									local destination = UDim2.fromOffset(targetPosition.X, targetPosition.Y)
 
 									charviewer_container.Position = charviewer_container.Position:Lerp(destination, 1 - math.exp(-25 * deltaTime))
 								end)
 
-								self.connections.viewerDragUpdater = inputService.InputChanged:Connect(function(input) 
+								self.connections.charViewerDragUpdater = inputService.InputChanged:Connect(function(input) 
 									if ( input.UserInputType.Name == 'MouseMovement' ) then
 										local c_mousePos = Vector2.new(input.Position.X, input.Position.Y) -- current mouse position 
 
@@ -814,8 +1175,8 @@ local Classes = {} do
 							end
 
 							if ( input.UserInputType.Name == 'MouseButton1' ) then
-								local dragUpdater = self.connections.viewerDragUpdater
-								local dragAnimator = self.connections.viewerDragAnimator 
+								local dragUpdater = self.connections.charViewerDragUpdater
+								local dragAnimator = self.connections.charViewerDragAnimator 
 
 								if ( dragUpdater ) then
 									dragUpdater:Disconnect()
@@ -829,16 +1190,201 @@ local Classes = {} do
 								local viewerX = charviewer_viewport.AbsolutePosition.X 
 								local windowX = window.AbsolutePosition.X + ( window.AbsoluteSize.X / 2 ) -- account for midway anchorpoint
 
-								if ( viewerX >= windowX ) then -- viewer is to the right, snap to 1.1
-									tween.Smooth(charviewer_container, {Position = UDim2.fromScale(1.1, 0.03)}, 0.3)
-									charviewer_container:SetAttribute('_XPosition', 1.1)
-								else
-									tween.Smooth(charviewer_container, {Position = UDim2.fromScale(-0.45, 0.03)}, 0.3)
-									charviewer_container:SetAttribute('_XPosition', -0.45)
+								--if ( viewerX >= windowX ) then -- viewer is to the right, snap to 1.05
+								tween.Smooth(charviewer_container, {Position = UDim2.fromScale(1.05, 0.03)}, 0.3)
+									--charviewer_container:SetAttribute('_XPosition', 1.1)
+								--else
+								--	tween.Smooth(charviewer_container, {Position = UDim2.fromScale(-0.45, 0.03)}, 0.3)
+								--	charviewer_container:SetAttribute('_XPosition', -0.45)
+								--end
+							end
+						end)]]
+					end
+
+					-- Config viewer
+					do 
+						local folderName = self:GetFolderName()
+
+						local configviewer_container = instances.configviewer_container
+						local configviewer_found_menu = instances.configviewer_found_menu -- jesus christ this sucks
+						local configviewer_save_menu = instances.configviewer_save_menu
+
+						configviewer_container.Position = UDim2.fromScale(-0.45, 2)
+						configviewer_container.Visible = false
+
+
+						for _, object in ipairs({ '#create', '#delete', '#load', '#save' }) do 
+							local button = configviewer_save_menu[object]
+							local detector = button[object == '#create' and '#entry' or '#button']
+							local hovered = false 
+
+							button.MouseEnter:Connect(function() 
+								hovered = true 
+
+								tween.Quick(detector, {
+									BackgroundColor3 = detector:GetAttribute('_HoverColor')
+								})
+							end)
+
+							button.MouseLeave:Connect(function() 
+								hovered = false 
+
+								tween.Quick(detector, {
+									BackgroundColor3 = detector:GetAttribute('_MainColor')
+								})
+							end)
+
+							if ( detector.ClassName == 'TextButton' ) then
+								detector.MouseButton1Click:Connect(function() 
+
+									detector.BackgroundColor3 = detector:GetAttribute('_ClickColor')
+									tween.Quad(detector, {
+										BackgroundColor3 = ( hovered and detector:GetAttribute('_HoverColor') ) or detector:GetAttribute('_MainColor')
+									}, 0.5)
+								end)
+							end
+						end
+
+						-- create textbox
+						do 
+							local container = configviewer_save_menu['#create']
+							local entry = container['#entry']
+
+							entry.FocusLost:Connect(function(enter: boolean) 
+								if ( enter == false ) then
+									return 
 								end
+
+								local configName = entry.Text:gsub('[-_ !?@%(%)%%#%>%<%/\\%[%]]', '_')
+								if ( configName:sub(-5) ~= '.json' ) then
+									configName ..= '.json'
+								end
+
+								self:SaveConfig(configName)
+								self:_RenderCfgFoundMenu()
+
+								entry.Text = 'create new config'
+							end)
+						end
+
+						-- destroy button
+						do 
+							local container = configviewer_save_menu['#delete']
+							local button = container['#button']
+
+							local path = configviewer_found_menu['#menu']
+							button.MouseButton1Click:Connect(function() 
+								local deletedFile = false  
+
+								for _, entry in ipairs(path:GetChildren()) do 
+									if ( entry:GetAttribute('_IsEntry') == true ) then
+										-- found a config
+										if ( entry:GetAttribute('_Selected') == true ) then
+											local file = entry['#button']['#title'].Text 
+											delfile(folderName .. '/' .. file)
+
+											deletedFile = true 
+										end
+									end
+								end
+
+								if ( deletedFile ) then
+									self:_RenderCfgFoundMenu()
+								end
+							end)
+						end
+
+						-- save button
+						do 
+							local container = configviewer_save_menu['#save']
+							local button = container['#button']
+
+							local path = configviewer_found_menu['#menu']
+							button.MouseButton1Click:Connect(function() 
+								for _, entry in ipairs(path:GetChildren()) do 
+									if ( entry:GetAttribute('_IsEntry') == true ) then
+										-- found a config
+										if ( entry:GetAttribute('_Selected') == true ) then
+											local file = entry['#button']['#title'].Text 
+											-- local path = folderName .. '/' .. file
+
+											self:SaveConfig(file)
+
+											Library:Notify({
+												Title = 'Saved config',
+												Text = 'Successfully saved to ' .. file,
+												Duration = 3,
+												Silent = true
+											})
+										end
+									end
+								end
+							end)
+						end
+
+						-- load button
+						do 
+							local container = configviewer_save_menu['#load']
+							local button = container['#button']
+
+							local path = configviewer_found_menu['#menu']
+							button.MouseButton1Click:Connect(function() 
+								for _, entry in ipairs(path:GetChildren()) do
+
+									local isConfig = ( entry:GetAttribute('_IsEntry') == true ) and ( entry:GetAttribute('_Selected') == true )
+
+									if ( isConfig ) then
+										local file = entry['#button']['#title'].Text 
+										local success, errMsg = self:LoadConfig(file)
+
+										if ( success ) then
+											Library:Notify({
+												Title = 'Loaded config',
+												Text = 'Successfully loaded from ' .. file,
+												Duration = 3,
+												Silent = true
+											})
+										else
+											Library:Notify({
+												Title = 'Failed to load config',
+												Text = errMsg,
+												Duration = 3,
+												Silent = true
+											})
+										end
+
+										break
+									end
+								end
+							end)
+						end
+						
+						makefolder(self:GetFolderName())
+
+						-- render config menu 
+						self:_RenderCfgFoundMenu()
+
+						-- config refresher
+						-- if a new config is added to the directory, it's automatically detected and added
+						self.connections.configCheck = task.spawn(function()
+							local lastfiles = listfiles(folderName)
+
+							while ( true ) do
+								local nowfiles = listfiles(folderName)
+								for index, b in nowfiles do
+									if ( table.find(lastfiles, b) == nil ) then
+										-- new file
+										self:_RenderCfgFoundMenu()
+										lastfiles = nowfiles
+										break
+									end
+								end
+
+								task.wait(2)
 							end
 						end)
 					end
+
 
 					-- Window dragging
 					do 
@@ -921,12 +1467,18 @@ local Classes = {} do
 						local controlClose = instances.control_close
 						local controlMinimize = instances.control_minimize
 						local controlSettings = instances.control_settings
+						local controlConfig = instances.control_config 
+						local controlChangelog = instances.control_changelog
+						local controlCharviewer = instances.control_charviewer
 
-						controlMinimize.Visible = false 
-						controlSettings.Visible = false 
+						controlMinimize.Visible = settings.MinimizeEnabled 
+						controlSettings.Visible = false -- settings.SettingsEnabled 
+						controlChangelog.Visible = settings.ChangelogEnabled
+						controlConfig.Visible = settings.ConfigViewerEnabled
+						controlCharviewer.Visible = settings.CharViewerEnabled
 
 						-- this loop thingy may look bad but its super nice
-						for _, button in ipairs({ controlClose, controlMinimize, controlSettings }) do
+						for _, button in ipairs({ controlClose, controlMinimize, controlSettings, controlConfig, controlChangelog, controlCharviewer }) do
 							button.MouseEnter:Connect(function() 
 								tween.Quick(button['#button']['#icon'], {
 									ImageColor3 = Color3.fromRGB(25, 175, 255)
@@ -961,6 +1513,22 @@ local Classes = {} do
 								self:Unminimize()
 							else
 								self:Minimize()
+							end
+						end)
+
+						controlConfig['#button'].MouseButton1Click:Connect(function() 
+							if ( self:IsConfigViewerOpen() ) then
+								self:HideConfigViewer()
+							else
+								self:ShowConfigViewer()
+							end
+						end)
+
+						controlCharviewer['#button'].MouseButton1Click:Connect(function() 
+							if ( self:IsCharViewerOpen() ) then
+								self:HideCharViewer()
+							else
+								self:ShowCharViewer()
 							end
 						end)
 					end
@@ -1006,6 +1574,7 @@ local Classes = {} do
 
 				-- Private properties
 				self._menus = {}
+				self._title = settings.Title 
 
 				-- Instance declaration
 				do 
@@ -1135,6 +1704,7 @@ local Classes = {} do
 				self.parent = parent 
 
 				-- Private properties
+				self._title = settings.Title 
 				self._selected = false -- for button
 				self._menuId = 0 do
 					local count = 0 
@@ -1250,6 +1820,8 @@ local Classes = {} do
 				local s_title = settings.Title
 				local s_callback = settings.Callback
 				local s_state = settings.State 
+				local s_flag = settings.Flag 
+
 
 				if ( typeof(s_title) ~= 'string' ) then
 					s_title = 'Toggle'
@@ -1263,10 +1835,15 @@ local Classes = {} do
 					s_state = false 
 				end
 
+				if ( typeof(s_flag) ~= 'string' ) then
+					s_flag = nil 
+				end
+
 				return Classes.ModuleToggle.new(self, {
 					Callback = s_callback;
 					Title = s_title;
 					State = s_state;
+					Flag = s_flag;
 				})
 			end
 
@@ -1282,10 +1859,10 @@ local Classes = {} do
 				local s_callback = settings.Callback
 				local s_style = settings.Style -- slider style; can be 'Large' or 'Normal'
 
-				--local s_flag = settings.Flag
+				local s_flag = settings.Flag
 
 				if ( typeof(s_value) ~= 'number' ) then
-					s_value = 500
+					s_value = 50 
 				end
 
 				if ( typeof(s_step) ~= 'number' ) then 
@@ -1297,7 +1874,7 @@ local Classes = {} do
 				end
 
 				if ( typeof(s_maximum) ~= 'number' ) then
-					s_maximum = 500 
+					s_maximum = 100 
 				end
 
 				if ( s_exponential ~= true ) then
@@ -1326,6 +1903,11 @@ local Classes = {} do
 				s_value = math.clamp(s_value, s_minimum, s_maximum)
 				s_value = round(s_value, s_step)
 
+
+				if ( typeof(s_flag) ~= 'string' ) then
+					s_flag = nil 
+				end
+
 				return Classes.ModuleSlider.new(self, {
 					Value = s_value;
 					Step = s_step;
@@ -1336,7 +1918,7 @@ local Classes = {} do
 					Title = s_title;
 					Callback = s_callback;
 					Style = s_style;
-					--Flag = s_flag;
+					Flag = s_flag;
 				})
 			end
 
@@ -1379,6 +1961,7 @@ local Classes = {} do
 				self.parent = parent 
 
 				-- Private properties
+				self._title = settings.Title 
 				self._sectionId = #(parent._sections)
 				self._modules = {} 
 				self._side = settings.Side 
@@ -1470,6 +2053,7 @@ local Classes = {} do
 				self.parent = parent 
 
 				-- Private properties
+				self._title = settings.Title 
 				self._moduleId = #(parent._modules)
 				self._hovered = false 
 				self._callback = settings.Callback
@@ -1508,6 +2092,40 @@ local Classes = {} do
 						self:Click()
 					end) 
 
+					clickButton.MouseButton2Click:Connect(function() 
+						if ( self.connections.hotkeyListener ) then
+							return 
+						end
+
+						local window = self:GetParentOfClass('Window')
+						window:_ShowBindPrompt(self._title)
+
+						local now = coroutine.running()
+
+						local keybind
+
+						self.connections.hotkeyListener = inputService.InputBegan:Connect(function(input: InputObject) 
+							if ( not input.KeyCode ) then
+								return 
+							end
+
+							keybind = input.KeyCode
+							Library:AddKeybind(self, input.KeyCode, function() 
+								self:Click()
+							end)
+
+							self.connections.hotkeyListener:Disconnect()
+							self.connections.hotkeyListener = nil
+
+							coroutine.resume(now)
+						end)
+
+
+						coroutine.yield()
+
+						window:_HideBindPrompt(self._title, keybind.Name)
+					end)
+
 					clickButton.MouseEnter:Connect(function() 
 						self._hovered = true 
 
@@ -1530,6 +2148,7 @@ local Classes = {} do
 				return self 
 			end
 		end	
+
 
 		return ModuleButton 
 	end)();
@@ -1642,9 +2261,9 @@ local Classes = {} do
 			ModuleToggle.IsEnabled = ModuleToggle.GetValue
 			ModuleToggle.GetToggleState = ModuleToggle.GetValue 
 
-			function ModuleToggle:GetFlagValue() 
-				return self:GetValue()
-			end
+
+			ModuleToggle.GetCfgValue = ModuleToggle.GetValue
+			ModuleToggle.SetCfgValue = ModuleToggle.SetState 
 
 			function ModuleToggle.new(parent, settings: {}) 
 				local self = setmetatable({}, ModuleToggle)
@@ -1656,10 +2275,15 @@ local Classes = {} do
 				self.flag = settings.Flag
 
 				-- Private properties
+				self._title = settings.Title 
 				self._moduleId = #(parent._modules)
 				self._hovered = false 
 				self._toggled = settings.State
 				self._callback = settings.Callback
+
+				if ( self.flag == nil ) then
+					self.flag = settings.Title .. self._moduleId
+				end
 
 				-- Instance declaration
 				do 
@@ -1893,10 +2517,8 @@ local Classes = {} do
 				return self._value
 			end
 
-			function ModuleSlider:GetFlagValue() 
-				return self:GetValue()
-			end
-
+			ModuleSlider.GetCfgValue = ModuleSlider.GetValue
+			ModuleSlider.SetCfgValue = ModuleSlider.SetValue
 
 			function ModuleSlider.new(parent, settings: {}) 
 				local self = setmetatable({}, ModuleSlider)
@@ -1908,6 +2530,7 @@ local Classes = {} do
 				self.flag = settings.Flag
 
 				-- Private properties
+				self._title = settings.Title 
 				self._moduleId = #(parent._modules)
 				self._hovered = false 
 
@@ -1922,6 +2545,10 @@ local Classes = {} do
 
 				self._decimalCount = math.max((#tostring(self._step)) - (#string.format('%d', self._step) + 1), 0) -- gets length of normal format, subtracts by length of rounded format ( minus one for the decimal point, math.max in case there is no decimal )
 				self._format = '%.' .. self._decimalCount .. 'f'				
+
+				if ( self.flag == nil ) then
+					self.flag = settings.Title .. self._moduleId
+				end
 
 				-- Instance declaration
 				do 
@@ -2188,6 +2815,7 @@ local Classes = {} do
 				self.parent = parent 
 
 				-- Private properties
+				self._title = settings.Title 
 				self._moduleId = #(parent._modules)
 				self._variadicHeight = true -- height can vary
 
@@ -2258,10 +2886,10 @@ local Classes = {} do
 				self.parent = parent 
 
 				-- Private properties
-				--self._notifId = #parent._notifs 
+				self._title = settings.Title 
 
 				local function getHeight() 
-					local height = 0 
+					local height = 20 
 
 					for _, notif in ipairs(parent._notifs) do
 						height += notif.instances.notification.AbsoluteSize.Y + 20
@@ -2353,8 +2981,16 @@ function Library:GetObjects()
 	return libraryObjects
 end
 
+function Library:GetKeybindMenu() 
+	return librarySource['#keybind-menu']
+end
+
 function Library:GetNotifContainer() 
 	return librarySource['#notification-container']
+end
+
+function Library:GetCharacter(modelName: string) 
+	return librarySource['Characters'][modelName]
 end
 
 function Library:Destroy() 
@@ -2369,7 +3005,7 @@ function Library:Destroy()
 	for _, window in ipairs(self._windows) do
 		window:Destroy(true)
 	end
-	
+
 	setmetatable(self, nil)
 end
 
@@ -2389,6 +3025,12 @@ function Library:CreateWindow(options: {})
 
 	local s_retainToggles = options.RetainToggles 
 	local s_destroyCallback = options.DestroyCallback
+
+	local s_minimizeEnabled = options.MinimizeEnabled
+	local s_settingsEnabled = options.SettingsEnabled 
+	local s_changelogEnabled = options.ChangelogEnabled 
+	local s_configviewerEnabled = options.ConfigViewerEnabled
+	local s_charviewerEnabled = options.CharViewerEnabled
 
 	if ( typeof(s_title) ~= 'string' ) then
 		s_title = 'EVICTEDLIB'
@@ -2438,6 +3080,22 @@ function Library:CreateWindow(options: {})
 		s_destroyCallback = nil
 	end
 
+	if ( s_minimizeEnabled ~= true ) then
+		s_minimizeEnabled = false 
+	end
+	if ( s_settingsEnabled ~= true ) then
+		s_settingsEnabled = false 
+	end
+	if ( s_charviewerEnabled ~= true ) then
+		s_charviewerEnabled = false 
+	end
+	if ( s_configviewerEnabled ~= true ) then
+		s_configviewerEnabled = false 
+	end
+	if ( s_changelogEnabled ~= true ) then
+		s_changelogEnabled = false 
+	end
+
 	return Classes.Window.new(self, {
 		Title = s_title; -- Title of window
 		Draggable = s_draggable; -- If window is draggable 
@@ -2454,6 +3112,12 @@ function Library:CreateWindow(options: {})
 
 		RetainToggles = s_retainToggles; -- Retains the state of toggles when the ui closes
 		DestroyCallback = s_destroyCallback; -- A function that gets called with destruction of this window occurs
+
+		ChangelogEnabled = s_changelogEnabled; -- If the changelog control should be shown or not
+		ConfigViewerEnabled = s_configviewerEnabled; -- If the config viewer control should be shown or not
+		MinimizeEnabled = s_minimizeEnabled; -- If the minimize control should be shown or not
+		SettingsEnabled = s_settingsEnabled; -- If the settings control should be shown or not
+		CharViewerEnabled = s_charviewerEnabled; -- If the charviewer control should be shown or not
 	})
 end
 
@@ -2486,5 +3150,50 @@ function Library:Notify(settings: {})
 		Silent = s_silent;
 	})
 end
+
+function Library:AddKeybind(module: {}, keycode: KeyCode, callback) 
+	local menu = self:GetKeybindMenu() 
+	local entry_container = menu['#content-container']['#entry-container']
+
+	local entry = entry_container['#template']:Clone()
+	entry.Text = ('[%s]: %s'):format(keycode.Name, module._title)
+	entry.Parent = entry_container
+
+	table.insert(self._keybinds, {
+		Debounce = true;
+		Callback = callback;
+		Flag = module.Flag;
+		KeyCode = keycode;
+		MenuEntry = entry;
+	})
+
+	return self
+end
+
+function Library:RemoveKeybind(flag: string) 
+	for index, keybind in self._keybinds do
+		if ( keybind.Flag == flag ) then
+			keybind.MenuEntry:Destroy()
+
+			table.remove(self._keybinds, index)
+			break
+		end
+	end
+
+	return self 
+end
+
+--[[Library.connections.inputHandler = inputService.InputBegan:Connect(function(input: InputObject) 
+	for _, keybind in Library._keybinds do 
+		if ( keybind.Debounce == true ) then
+			keybind.Debounce = false
+			continue
+		end
+
+		if ( keybind.KeyCode == input.KeyCode ) then
+			task.spawn(keybind.Callback) 
+		end
+	end
+end)]]
 
 return Library 
