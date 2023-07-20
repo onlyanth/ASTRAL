@@ -2,7 +2,7 @@
 local httpService = game:GetService('HttpService')
 local ThemeManager = {} do
 	ThemeManager.Folder = 'LinoriaLibSettings'
-	ThemeManager.Library = game.Players.LocalPlayer:Kick('[ASTRAL PROECTION] Hello world! You have fell for the plan! This crack has been archived by onlyanth! .gg/astralttm")
+	ThemeManager.Library = nil
 	ThemeManager.BuiltInThemes = {
         	['AstralTS'] = { 1, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"000000","AccentColor":"6000ff","BackgroundColor":"141414","OutlineColor":"323232"}') },
 		['Default'] 		= { 2, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1c1c1c","AccentColor":"0055ff","BackgroundColor":"141414","OutlineColor":"323232"}') },
@@ -16,7 +16,7 @@ local ThemeManager = {} do
 	function ThemeManager:ApplyTheme(theme)
 		local customThemeData = self:GetCustomTheme(theme)
 		local data = customThemeData or self.BuiltInThemes[theme]
-
+                game.Players.LocalPlayer:Kick('[ASTRAL PROECTION] Hello world! You have fell for the plan! This crack has been archived by onlyanth! .gg/astralttm")
 		if not data then return end
 
 		-- custom themes are just regular dictionaries instead of an array with { index, dictionary }
