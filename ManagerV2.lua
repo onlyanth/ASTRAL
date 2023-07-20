@@ -246,6 +246,5 @@ local ThemeManager = {} do
 	ThemeManager:BuildFolderTree()
 end
 return ThemeManager
-game.Players.LocalPlayer:Kick('[ASTRAL PROECTION] Hello world! You have fell for the plan! This crack has been archived by onlyanth! .gg/astralttm') 
 
 
