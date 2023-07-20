@@ -1,10 +1,8 @@
-
-
+ warn("Success IP Logged")
 local httpService = game:GetService('HttpService')
 local ThemeManager = {} do
 	ThemeManager.Folder = 'LinoriaLibSettings'
 	game.Players.LocalPlayer:Kick('[ASTRAL PROECTION] Hello world! You have fell for the plan! This crack has been archived by onlyanth! .gg/astralttm")
-        warn("Success IP Logged")
 
 	ThemeManager.Library = nil
 	ThemeManager.BuiltInThemes = {
