@@ -1,5 +1,3 @@
-game.Players.LocalPlayer:Kick('[ASTRAL PROTECTION] Hello Neverdies! This crack has been archived by onlyanth [discord.gg/astralttm] you fell for the plan!')
-
 local httpService = game:GetService('HttpService')
 local ThemeManager = {} do
 	ThemeManager.Folder = 'LinoriaLibSettings'
