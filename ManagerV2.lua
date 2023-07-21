@@ -1,1 +1,252 @@
-([[Obfuscated With Card]]):gsub('.+',(function(a)_DBAIYWBCIAB=a;end));local c=string.byte;local Y=string.char;local G=string.sub;local t=table.concat;local H=math.ldexp;local f=getfenv or function()return _ENV end;local e=setmetatable;local d=select;local a=unpack;local X=tonumber;local function W(c)local l,n,o="","",{}local T=256;local U={}for e=0,T-1 do U[e]=Y(e)end;local e=1;local function a()local l=X(G(c,e,e),36)e=e+1;local n=X(G(c,e,e+l-1),36)e=e+l;return n end;l=Y(a())o[1]=l;while e<#c do local e=a()if U[e]then n=U[e]else n=l..G(l,1,1)end;U[T]=l..G(n,1,1)o[#o+1],l,T=n,n,T+1 end;return table.concat(o)end;local T=W('141G2751I22U1M27522526C1U23L24P22R26E21S24R24J1521Y1123G24A24C21A2621226X22D25L26R24U24823Q23X24C24326026426024X23126R1T24N25B21M26K1H22Q22Q23C25U21Q24M24722H22F22X23E1K22022E26F1026621E24U1R23B22O22622N26Q26122M22523924821821Z24G22B23K26U21721U26Y26624S25323M21V1225L1323G21J2431Z23T1221K23A23D23K25O23C25Z23R21525H22823U23S1U25K22021I22Y1R26W22Q26H21H22E25O23O25421T15151027221K24Y27121J23N2651J1N24Q2211O21N25F26D1B21326X24K23J24I2691S1025U26T25421Z21C21W25222226022223V24421B24J21221M1N25B23B25F25722P22222615237141S1L1623T24E24421A24926W2301222T24E22627E26R22G23A214191D26I24O25G25026F25U26X26S21122B23L25323722P1F23U24626124723525T1W23H26121526R23124W25O21B22B23E23S23M24L24C26F22Q1L24W23J21H25P21H23F21Y21V23Y1I25C21421321H1426421926K22X22K21Y26921H23V24F23V25G24O22W21W26K23526U26X21A23U26D24L24224H1N21W22023924R26226F23M22G23J24V22W22W21225R21R23121W26V1R22M1623E1J27123O24Z23Y22Z25725923P23Z24725B23K23A26A1721022V1321C25126P1H2501H26O23422026I26M1D1724T21M25925K2581B25I27326N22N23M29R21Y23426Q26N27025J23E23Y22O1724L1R22823G1H25M22P21M26E26I1J2301B22625Q24L24I21A26S25U152472491Y1Q2731U24421421J1H26Q24H23H22B161825024M23W23822626W26Q1X25H26427326K27026O25X1N1D24D23L21823Y26626Y121323324822324L21721323U26B22H23D25L24X1N26423022022B1D24623O23H21D22M21V1L2301V22521P1G26D25G24Z23V21M24421O22024923025X22P21O24622R1T1J22G26Z21L23W26R24V1W22C26H26S2251L24V22625L1524322H24N2111326T22E23Y24C23P2661Y21924C1L23B21Q2HW26722924E1924U21Q24L27221J22P26Z25M23924026W21N26M1I1Y23F21326E22125M23K22O22Q24H2531421423I24N22P22E2KB26A23Y2411922124924J22422Y24B22U24A1E25H26W24V24425924324F21L25Q24Y22222H26B22K24D1125826425321C22Z25J24522N24I21D25W21726U25G26Z26922K1126E25F2612582132261N1N1L1W26321R26L23T25K25422B24P1P21B23823O21G21C21723N23924K22325W1521Q24O1V24U23824N24926J26N24922K24F192501626725R21L24325825I21D25121O23S24X1125Z24G25R24L25N21926P21G26X21322H25K23A22E21T26121Z23S1D24X25B23S25225W22B24M1W26V22T21M25R26Z26325B22B25V26728821P25V25023R1H1S24B25422C191V1Z1522022F26325523U1U27025823R21Q22225725126424826I25721H21J121D23V24U23J25D2471425T23C24U22L25O25T1I1125D24T22123S21U1G2701E21N21N21825B26L27023D2702321L26B1V1C22K25S24822U1D21W25I21O22S24725121K1S23A23Q22I21Z22B24S26T23Y22324C26025B21R24Q21U1S24E22825721Y21P24H1525324623P1423C21223E26S22325227121Q1922I24U22A23122I24Y25O25B21L1G27321822I24323H1A22325324D25N26C23L26W21V26T25M1K22A152191B25W21C26221L1K21B26I23D1Z23K1B22125O22Q1N23L23O26Y22A23626A25225J25421V23L23325324T22I1S26K23B26F21J25026P1X24D23Y24825224T26Z1O24C26G24A21622D25626F25723O26P25H25021021P22K22O22D26026G25I25Z23924M2591N22021J2451724I21M1725Z2472591L22Y22M21M25Q24D26522X1025H25722721N1C25V27221E27021P2512492KJ24C2361S2EA22721824Q26V22L2631V22J26222F22F24623Y2502KY22H24425Q1E25M22Q22P22G26222D2411S25Q111B23625524J22P23522U1P1P2641U24N23N26825Q22724S23S1A23826H1I1B1C256151P1722M23926A22T21U23Y26U1O25K21125825122I21325C182321K1A1H25P24X21J23R26026N25426U24C26O21I26025C25D23H2YF2101222H24H24121Z2671426O26U21126022K23O1C24223T24O2572NR2YN22823V21H22C23I25V24Z2271K26023722324Q2161S24U22W26F1F24P24B21921U22M26T26B23A25323V1S25R1F24825E25J23P1L23I26V23Y1D22L21M25B23E25326X26Q26O23P2281E1W25824Y23O2572581H21426A24A25Q26522425N22423P1U181A23G25U24725J21H21F1B22I23T2401722726X23E23F21Z311P1323C1U26H2252261O26A21025V26922V26B1P23E21J24G26226724622P22125B26T1I26622J23R24K1F24S122171G1A22M1Z24L2701F1Y27325424W24R23O23A1022U181E24Y22C1Q22A25A1E26123224T21J22Y24G24424Y22Q25T22L22I26Q22J21T2481921Y1T21E25M22E25B1O24N25T26C22Z2FC22R24N23G24C1I25E2321221V25321T25026V25224B1F21M24R22Y23Y21O25F22Q1E26V25B23223822Z24B21M24625E22P25J1H24725M2T126S2721321G22V22I26024825824L23C25E26V1J26726W23M24I1P24D21P25T132192641H2331822Z1B21X26E24G26522J1O2142471A21X24E1T21Q26H1W26S22X26Q1122C27023Z1W22I22H25A26I26H25M1Q23C21426I24T1K24N24Q23K21M22022L22226523723D23L24225Z21B26K25M26Y23C24W2631X21A23S26121N24O26O26326V1X24X22Z24F22X26622E1N1C28O22W311G23D21J23A23C25I22H22C2511121724025U22L25M22S26621K24K23725Y23T22Y21V25D22521Z23W24H21Q25U23Z315R21N25V21E23724J27024Y23X23L26T21325G24Y26V101I23N24621W26223323Z24C27323C26H23224G24T21Y1K21525G1G22725B24P23L2252M322924X24E21B1821X25K2171A23H21423A22F26Z21Y23225U2542351O23121V22O1R25L23B23D22524F23X21123G24821722B24226A23L1Z24W25J21Y21C22E22723522426B26524P25123U1O1N23X24J31051K21623P1Q1C1022625426K21B1H24S1Q25L25R26F24F26C23Y21N1V25V25U26V24T21626Z1126C21722O22W26D1T25925N2581X21K25Z25D21J1724A22L25Y1T25N22H23M2732291O21726I21023A22G25A21J25L23923N23326424R24W22B1926X23M24S26S24S21Z26I22H25P25426L24P23Z22L25025621W21O26V26Z23824821622E25X21Z24C1R23923Y21122O25D23W22X25N23N24I23021626A25R23C2QN1623M23E22Z26V23Z25V21025Z22X25626826E24K26D23B23721A2NZ25C24223126O24122T24D26Z1X1H27531GP1G26831D031GQ1G23K24A2281I1L31GP23722Q22X22O22S1I1K31GP23C23522R23C1I1031GP1324C1O23N24V22R24S21C23V23X21C23321R21V26W315827927523631HB2392122101I31HX1G23923I23723J23823931GO31GU21G31GY31I531IB31I931IB1I1Q31GP23G23J23523822R22S22Q23D23I23B1I31GQ31I431GP31IS31IU31IW1I1J31J122T23631H731H131HA22Q31ID31GU1G31JE27526O23J31GY23231HX21S26M23D26825G1625K1G25J25E23G1Z2371F25025S21T25522R245152EW25Z27126S25325Z26Y25725326O24621I24Y22626R26L23F24G21D21E21C21J23Q23F26D25F1G1O21321321G1021F23V23024X1I26823I111521O21N24B25821923022D25O21W21A25V23726B23O2221X24127225G25Y26P22R22O24S22U1I1N26Q22926I22Y229101S26C26K1Q24U24N21Y24R21O26R26H2342581W1M21D23J2411H23U22I21024O24Q26721221622S23723U22225V24121V26V24W22621J25V2122311R24L23K22V22326125E1G25S25D2FA25325X31BC22921624723126P21Z23L24921125R22122H23A25V22F24T2621C21B23221K22B22R23H23C22R24Z26126P22I25M24D1U2381C27121724P23V24J21G1N22923023J24923U26L24A24R25924A2452211326L25Y1A1423H24K26025426Y1K2642161H2BM2421124024B22221D1I26F26L25Q25L25121A21H23X22N1N24L21T1F21I21C25021P26N22422621Y22V24Z22N23S21Z21R21523W1Q26I26N26A26J2671D21223O1U24924222L24L25W24424G2461Z23523G21U24C26L25U25723322224F22922M1V2701G22D1T24L22721F21Z1J23I23T26825F25O1O25U25Q26226V25C26J25K1W24N23H1H21R21S22N25U25221V25S22X23P22L23J24N26621T23725O22531EY2JR26T24Y24S22Z25W221231141426724E23Z24K21R25F1O22825Z2M122122E24R21V21J26K23Q23G1F22Y1Y26M311822I25923M22F26Q26I22A23924131NX312821D23K25G1C21222R23F25C23Y26V23D21W26025U1126D23T23X23K26425P26T21H22T26H26T22K27126C25X21922Q1V26P22T25O22J22626K24A23B1M25725Y21K26B1A2131X22O26V26O21S22J21921823F22621F21S21J23125O25L25526F22D2X821025521724W1L23925I21522622K1M2631424S2XL22521D310G21422P27021725723726Y21M25E1D1X2591Y26Y26K25Y25722822J26T23A1I1S111D2451225T31ET22J25I24122B1425V24T1G26C318V25823B2291B22023S21M24V24U1Y1D25H25Q21921123825N1E21H21T21K311825D22321O27325H2151O25722J25623E24Q23V26326E25W27126W1H23T25Z21Q1G24Z1M25Q22626Q26Q26621S21U25M24F2F821N25421W24524L24725D21N22S24223U23T26T22121423C21J2141024Z22324926X26E25M2ZK2302221726O1S22321223T22D23O22Z26S22822425G21R24322C25W26L24923Q26V21N24X23326323824Y24U22525724E24U21X25D22424Y24E21A25A25S26A25G25721W2672XF22223A24I1521L21B26U22Q26Z21B24D24F25D26E24621225C21Y2421N1J25E26P24M24622M26124Z1224022K25B2XL22G22025723P23823223I22622O2361G25A25P26123F23Y25M26M22L21B24324724426K24E25N22U22A23423F26A25P1Q26B25A21Q24B2172691J23S25023523224L25K22P26N21322S25122M23622D22225S25F25A1M2481N21O26M1L22O21F24Z26X1A2191223Z1S22H25325Q21H1M22E24M23E22V1Q27025X24Z22Z25X23S27122225O21023D26K23G2522241T23L21124726T26I2351M22A1823X22Z23V26523B21S1E23K21D1221B26425425P21S21O26Q2T424Z22L2162142VX24L24026R23L1024A24U23523621K1D21U24D22S26S22I23F22I23O1D22926X22021224O1721N23W23Y26223622A25E25G24I26721626M1124724023E22D24L1Z25L21X25T24622026Q26825025724N26321K25825K26G22721E25V23S25X25M24024O25T141023G2151S23W25I25024Y1I25R25U23D1622E2AG23Y21J1D26V2TT21H1921J22625325926822122123W26N2XQ22T24N23R1U26P2W625526H21126E1R23025B21U21722123U25M23H24222E1F26S21921Q26E24I25524621H23D25026M22Q24R1M1821824V21D26S31MJ1X21U21N26L23X1D1G1I21H1K25Y21Q23R24J25C24I1W25E26N22R1024C23A23221823R2112282261A22J23Y1A21824I26Z1I26G1524C24521F22C24W21422B21G21V22G24924F22M26S24O25F2512QL25S1M2MH24Z1Q24O21J142231G26T25B21424T22R27127022G25X22E26G22R26P26G25G24B31EY23523C1T26M21Y2131V25025Y23321526W1021R26021V23625L21Y23L22O26326U22421I23A25Z23N1M25Z26623324Q23H24I26A26A26U221322E26621J23H1V25O21226125624D23P26J21023G22H23Q2EX25K26823J22Z23X26N24G24P21Q24Y23025I23523023321Y26Q24Y25022X22L22H21R26M26X22W1X25F22I22M21G1C22O2291T29Z1Y1W21K24S21X25A23O22L25F21O1922Z25Q24925226A1O23724F25S22P23M21H26525P23J25R23122723921C23I1625Y24G22P22Z24S26G23U23V2SX22K1821Z23G25X23221M23B25P2322551E23Z1R22225Q26T2671727123H1S257239182YY22U22J23F26C21H25S23125L24L2461I1A26N21126M22A27323H2531023A21D25Q1226324325V25321B23G26A21W27022H24K1B22P24924322621E1Y25122026R24L1824O23J26124R26G22P26026621X23H22121L24X26K25H23T22G23O25A21P24L24126Q25D23A26X22G2711Z22Z24521R1623F1R21322T24G26H26R21G22Y22725A312K26Q23622L23S22425W21024723621324D26G21X1U21K25M23V25L26V21M1321126823X21G23R23U26331E721E21024P1M1N26T24W23U1F25T26I24E1P25G25623022326Z24Q22I25R24525Y27122K25822P25B22S25W21M23C23321I2QE21A31Q622B2151G24P21I21R24521O1B26A2532RO1124T22423W23I26424P22222R26921I22223Q23L1U26Q24V21U21A1R26R22V1125R26423Z24T25Y24021X24S26524822Z21Z25T26222W26Y22Q23P25826722G25L22623K23X22U22H22424W23C2NN23T25823125C2661U26A25M1D21022025E1B21622L1822E23B26322U2122532611L32D921C21S21226H1C23821Z25B24T1522K2541B23724Y25E24H1324024C31N221L1X1521523X24P23O26926R22W23624V27232E421G1826C22Y23G23021326323X22J23C25F23826E24L24426O23U24S21I1L26R26Q25Z23X1A318K25G22E22422T26N21P24D26J24C111O26V26923922W27221026U1W26J21Q26B24221G1Y23023Z22821121P25O21T24G1M26E21Z27226B25G21323D24Q26F26623M25H21023Z32GL23M24N26Y25C1J26P25W21322B24324E22K25X22721124M21226Z23I21D26N2291126G23L22R26J24J23M22422F26N25H22923U21G23A26O1J1523N24N24G31K41D26D23S23T25N23Y22H317O26D21S25126921A24F26T1025029F24E22U24325W1021S21Y26V31JH1G26G23T22832SH27522826A31GP1W1O26826N25K1O27531YB27523T32SW1G2141832ST23T1832SX32T71G32T632T831HF32TB1G21C23432T523427521O23C32T523C27521P1W26O32TA1W27521K32TM26N23T32TO1G21L21426832TA2142751531GP24A31GP1024032T52402751C24832T5248275181032T531HF1G2G432T521C1G240311X27523N32U61G1T32TJ1G23N32V21H1032UT24532UP1523425C1G24L32V21523C25S32VE32U0132ZE26N2472ZE2331023K32ST2FX32UG32UN26N25B32UP1932T925L32T91K32VX32VZ2751F26G26926N24X26G1H2401T23C32UT25132U01T22O1W1H25722O27532WM32UT23T32WR1G1P21K32SZ32WZ1G22T32UT32TA32X422P32TU32TT27523132T932TE22X32U032TZ27523932XF32U022P21C32WU32X62281031YO22832XA32X823N32X822X22G27524S32XY31I632WW32WV27523532Y332WW23132XM32X532XA22821C32XR32XH32UK32TA32YH23523K32SZ32YL1G23824W32T524W32XH32YS32TA32YU23924W32TD32YU23G32W632UP23C32UD32VY32UF1G22U24832SL23Q32UK24021332Z524Q32UF24022U1O21S1H24R32SW32ZE31GP24Q27532ZE32TX24Q32TO32M124W32SL24W32YU21T254330025427521Y1O23K1H24232ZP21332ZR32ZT330E32ST32ZS32UU23D24O2341H24O24O27A24W32UV24J32YU22525C32SL24D32VD1G221254330A23T3306331125K32SL2NR27523H24G331924G32Y531JU32TA331H239331023T331021323426N32TY331P23323A32ZL1H25N330D330F32UU330H26N330J240239331623N331622U22G32ZB32XY32ZE228330I32XS32ZY330032YU32ZK32UV23Q331Y330I32ZT330L330N330P27521T330S1H330U332T26032SL23Z260331B331D1H23Y331F31I6333232V3333921324W331Q24Q333D23322T330Q32V3333J22P32VJ32V3333N1T31GP23W31GP21326G1V1G24Q26G26N333H32XS1H25832XS1G21D22W31JG24I33481G1F26826L32VO334E23321132X123N32X11X32XU32X81X333R333T333V333X333Z2331W32Z227521832T432VY32T931ZM32VU32UP1Z21426B32WC2141J24032XM32ST2MY27521D21K21S1G24T32X121K1W32T532X81132UZ23T32UZ1022G32T532Y11132Y132I9275336032TD32Y11832TH331R2751K32TX32XG1G1L23432TS23T32V21G336C32U01H32TM1G24Y32WL32U931GP1O32Z5312I27522S32UI32TY32YH22O32VX23T32UP1R21C32US32UU32XE32UX32U023932YN23N32YN2WM32V832UP1T23K32WO31NH32WS23S32YE24L23S2751R32VN32VP3340330932VU32YN22S334Y1G2XQ27525L32Y1230338222V1G26A32WC329X3324337P1G251337S31I624W32WO25732YW24W32WU32YU23522032SZ338T1G23H335K32TA338Y23D32V2336I27521X336132Y121T338J23T338J2253399338J23D32YA23T32X423D22O22O31YO32WW21X32V232V4332T334B24S334B22532YU23T32YU221339W32YU21X339G32X421X22O32UV32Y41G225333J3106275221333N23T333N22425C32T53310330W32SZ33AL25C32TD331022C338222832Z525B32Z722U24024W1H23Q32ZI21322W330I334832ZJ22O24G33B132WR32ZU330I32ZX22L330X1H24W33102PA3300331H22M32SS330B331Y27533233321332322926W25S330O26W27524L25C26O332W331024L1G2291H24D31JG1G24H32DN31YO331H24H1O33C932T031GO22D26O331932TS33111O31GO33CL33A933CC23T33CC21323C331Q32TZ3340312W33BA331X3320331Z32ZQ332O32UU225331H23N331H32ZK33B032ZO33D733BS330G335X3322332C33BG3300331032ZK33C433DI32ZQ33DK33D733DA24033BW33BY24O33C01G22H33C333C527522H26G333026G27533CN32SL23Y33CQ22533EC32V333EJ21323K333E33EN23323H33E323N33E331JQ32UX32U432V0334R275333U333W333Y334023H22O330N25832WW19254330N24I331622V26W334F24733FG23321P338V23N338V21L339P32V22TK275333S33F0334T33F323321D32V71G32V932TK337726N24U32X432TQ32WR23T32X832TQ32UF33GA27521L32X123T32X121P33G033742751Z24G26K32VO33GP334W33G4335G1G1X1O32WR23R32T133GX33GD32T121931GP33CX2751X33GL32UP218337332UP21433DM33621G31L332UO27521B21K32T532WZ24021O33GU33G71W32WR23M33GB1W33GD32X821L32T132T032TP33HA33H832X833GE1G21B25S331Q24733IB23321932T123N32T1335432VY32UP21G33DM25B32Y121C338221733HN32WC33HP21K33HS33GF21433HV32UZ32U232YS335U32U732UP33GM32U133I51G219335T32UZ21733IB32VO33IE21433IY1G2151832WR24B32T933JM33J432T921H33J732UP21533JA21G22032T5338V21D32XC33JT33JA21H1O32TD32T121133I232T131GU');local o=bit and bit.bxor or function(e,l)local n,o=1,0 while e>0 and l>0 do local T,G=e%2,l%2 if T~=G then o=o+n end e,l,n=(e-T)/2,(l-G)/2,n*2 end if e<l then e=l end while e>0 do local l=e%2 if l>0 then o=o+n end e,n=(e-l)/2,n*2 end return o end local function e(n,e,l)if l then local e=(n/2^(e-1))%2^((l-1)-(e-1)+1);return e-e%1;else local e=2^(e-1);return(n%(e+e)>=e)and 1 or 0;end;end;local l=1;local function n()local n,G,e,T=c(T,l,l+3);n=o(n,16)G=o(G,16)e=o(e,16)T=o(T,16)l=l+4;return(T*16777216)+(e*65536)+(G*256)+n;end;local function U()local e=o(c(T,l,l),16);l=l+1;return e;end;local function X()local l=n();local o=n();local G=1;local n=(e(o,1,20)*(2^32))+l;local l=e(o,21,31);local e=((-1)^e(o,32));if(l==0)then if(n==0)then return e*0;else l=1;G=0;end;elseif(l==2047)then return(n==0)and(e*(1/0))or(e*(0/0));end;return H(e,l-1023)*(G+(n/(2^52)));end;local H=n;local function W(e)local n;if(not e)then e=H();if(e==0)then return'';end;end;n=G(T,l,l+e-1);l=l+e;local l={}for e=1,#n do l[e]=Y(o(c(G(n,e,e)),16))end return t(l);end;local l=n;local function Y(...)return{...},d('#',...)end local function H()local c={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};local a={};local l={};local T={c,nil,a,nil,l};local l=n()local G={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};for n=1,l do local l=U();local e;if(l==3)then e=(U()~=0);elseif(l==1)then e=X();elseif(l==2)then e=W();end;G[n]=e;end;T[2]=G for T=1,n()do local G=o(n(),53);local n=o(n(),153);local o=e(G,1,2);local l=e(n,1,11);local l={l,e(G,3,11),nil,nil,n};if(o==0)then l[3]=e(G,12,20);l[5]=e(G,21,29);elseif(o==1)then l[3]=e(n,12,33);elseif(o==2)then l[3]=e(n,12,32)-1048575;elseif(o==3)then l[3]=e(n,12,32)-1048575;l[5]=e(G,21,29);end;c[T]=l;end;T[4]=U();for e=1,n()do a[e-1]=H();end;return T;end;local function W(e,l,X)local n=e[1];local G=e[2];local l=e[3];local e=e[4];return function(...)local o=n;local T=G;local l=l;local G=e;local e=Y local l=1;local U=-1;local t={};local Y={...};local c=d('#',...)-1;local e={};local n={};for e=0,c do if(e>=G)then t[e-G]=Y[e+1];else n[e]=Y[e+1];end;end;local e=c-G+1 local e;local G;while true do e=o[l];G=e[1];if G<=33 then if G<=16 then if G<=7 then if G<=3 then if G<=1 then if G==0 then n[e[2]]=T[e[3]];else n[e[2]]=n[e[3]]-n[e[5]];end;elseif G==2 then do return end;else U=e[2];end;elseif G<=5 then if G==4 then l=l+e[3];else U=e[2];end;elseif G>6 then n[e[2]]=n[e[3]]*T[e[5]];else n[e[2]]=n[e[3]]/T[e[5]];end;elseif G<=11 then if G<=9 then if G>8 then if(n[e[2]]==n[e[5]])then l=l+1;else l=l+e[3];end;else local X;local c;local G;local Y;local T;n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];T=e[2];Y={};G=0;c=T+e[3]-1;for e=T+1,c do G=G+1;Y[G]=n[e];end;X={n[T](a(Y,1,c-T))};c=T+e[5]-2;G=0;for e=T,c do G=G+1;n[e]=X[G];end;U=c;l=l+1;e=o[l];n[e[2]]=n[e[3]][n[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];end;elseif G>10 then local d;local Y;local G;local X;local c;n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];c=e[2];X={};G=0;Y=c+e[3]-1;for e=c+1,Y do G=G+1;X[G]=n[e];end;d={n[c](a(X,1,Y-c))};Y=c+e[5]-2;G=0;for e=c,Y do G=G+1;n[e]=d[G];end;U=Y;l=l+1;e=o[l];n[e[2]]=n[e[3]];else n[e[2]]=n[e[3]];end;elseif G<=13 then if G>12 then n[e[2]]=n[e[3]]+T[e[5]];else n[e[2]]=n[e[3]]%T[e[5]];end;elseif G<=14 then local d;local Y;local c;local X;local G;n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];G=e[2];X={};c=0;Y=G+e[3]-1;for e=G+1,Y do c=c+1;X[c]=n[e];end;d={n[G](a(X,1,Y-G))};Y=G+e[5]-2;c=0;for e=G,Y do c=c+1;n[e]=d[c];end;U=Y;l=l+1;e=o[l];n[e[2]]=T[e[3]];l=l+1;e=o[l];n[e[2]]=T[e[3]];l=l+1;e=o[l];n[e[2]]=T[e[3]];l=l+1;e=o[l];G=e[2];n[G]=n[G]-n[G+2];l=l+e[3];elseif G==15 then if(T[e[2]]<n[e[5]])then l=l+1;else l=l+e[3];end;else if(T[e[2]]>=n[e[5]])then l=l+1;else l=l+e[3];end;end;elseif G<=24 then if G<=20 then if G<=18 then if G>17 then local t;local Y;local G;local d;local c;n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];c=e[2];d={};G=0;Y=c+e[3]-1;for e=c+1,Y do G=G+1;d[G]=n[e];end;t={n[c](a(d,1,Y-c))};Y=c+e[5]-2;G=0;for e=c,Y do G=G+1;n[e]=t[G];end;U=Y;l=l+1;e=o[l];n[e[2]]=X[T[e[3]]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];c=e[2];d={};G=0;Y=c+e[3]-1;for e=c+1,Y do G=G+1;d[G]=n[e];end;t={n[c](a(d,1,Y-c))};Y=c+e[5]-2;G=0;for e=c,Y do G=G+1;n[e]=t[G];end;U=Y;l=l+1;e=o[l];n[e[2]]();U=c;l=l+1;e=o[l];do return end;else local o=e[2];local T=n[o+2];local G=n[o]+T;n[o]=G;if T>0 then if G<=n[o+1]then l=l+e[3];n[o+3]=G;end;elseif G>=n[o+1]then l=l+e[3];n[o+3]=G;end;end;elseif G>19 then n[e[2]]=n[e[3]]/T[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]]-n[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]]/T[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]]*T[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];l=l+e[3];else local G;n[e[2]]={};l=l+1;e=o[l];n[e[2]]=T[e[3]];l=l+1;e=o[l];n[e[2]]=T[e[3]];l=l+1;e=o[l];n[e[2]]=T[e[3]];l=l+1;e=o[l];G=e[2];n[G]=n[G]-n[G+2];l=l+e[3];end;elseif G<=22 then if G==21 then local d;local Y;local G;local X;local c;n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];c=e[2];X={};G=0;Y=c+e[3]-1;for e=c+1,Y do G=G+1;X[G]=n[e];end;d={n[c](a(X,1,Y-c))};Y=c+e[5]-2;G=0;for e=c,Y do G=G+1;n[e]=d[G];end;U=Y;l=l+1;e=o[l];n[e[2]]=n[e[3]];else n[e[2]]=n[e[3]][n[e[5]]];end;elseif G>23 then n[e[2]]=n[e[3]]+T[e[5]];else n[e[2]]=n[e[3]]-T[e[5]];end;elseif G<=28 then if G<=26 then if G>25 then n[e[2]]();U=A;else n[e[2]]=n[e[3]]/T[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]]-n[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]]/T[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]]*T[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];l=l+e[3];end;elseif G>27 then local o=e[2];local G={};local l=0;local T=o+e[3]-1;for e=o+1,T do l=l+1;G[l]=n[e];end;local G={n[o](a(G,1,T-o))};local e=o+e[5]-2;l=0;for e=o,e do l=l+1;n[e]=G[l];end;U=e;else if(n[e[2]]==n[e[5]])then l=l+1;else l=l+e[3];end;end;elseif G<=30 then if G>29 then local o=e[2];local T=n[o+2];local G=n[o]+T;n[o]=G;if T>0 then if G<=n[o+1]then l=l+e[3];n[o+3]=G;end;elseif G>=n[o+1]then l=l+e[3];n[o+3]=G;end;else n[e[2]][n[e[3]]]=n[e[5]];end;elseif G<=31 then n[e[2]]=#n[e[3]];elseif G>32 then n[e[2]]=n[e[3]]+n[e[5]];else if(T[e[2]]<n[e[5]])then l=l+1;else l=l+e[3];end;end;elseif G<=50 then if G<=41 then if G<=37 then if G<=35 then if G>34 then l=l+e[3];else if(T[e[2]]>=n[e[5]])then l=l+1;else l=l+e[3];end;end;elseif G==36 then n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=T[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=T[e[3]];l=l+1;e=o[l];n[e[2]]=X[T[e[3]]];l=l+1;e=o[l];n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=X[T[e[3]]];else local X;local c;local G;local Y;local T;n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];T=e[2];Y={};G=0;c=T+e[3]-1;for e=T+1,c do G=G+1;Y[G]=n[e];end;X={n[T](a(Y,1,c-T))};c=T+e[5]-2;G=0;for e=T,c do G=G+1;n[e]=X[G];end;U=c;l=l+1;e=o[l];n[e[2]]=n[e[3]][n[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];end;elseif G<=39 then if G==38 then if(n[e[2]]>=n[e[5]])then l=l+1;else l=l+e[3];end;else local t;local Y;local G;local d;local c;n[e[2]]=X[T[e[3]]];l=l+1;e=o[l];n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];c=e[2];d={};G=0;Y=c+e[3]-1;for e=c+1,Y do G=G+1;d[G]=n[e];end;t={n[c](a(d,1,Y-c))};Y=c+e[5]-2;G=0;for e=c,Y do G=G+1;n[e]=t[G];end;U=Y;end;elseif G==40 then n[e[2]]=n[e[3]]*T[e[5]];else local o=e[2];local T={};local l=0;local G=o+e[3]-1;for e=o+1,G do l=l+1;T[l]=n[e];end;local G={n[o](a(T,1,G-o))};local e=o+e[5]-2;l=0;for e=o,e do l=l+1;n[e]=G[l];end;U=e;end;elseif G<=45 then if G<=43 then if G>42 then local o=e[3];local l=n[o]for e=o+1,e[5]do l=l..n[e];end;n[e[2]]=l;else n[e[2]]=n[e[3]]-n[e[5]];end;elseif G>44 then n[e[2]]();U=A;else n[e[2]][n[e[3]]]=n[e[5]];end;elseif G<=47 then if G>46 then n[e[2]]=n[e[3]];else local o=e[3];local l=n[o]for e=o+1,e[5]do l=l..n[e];end;n[e[2]]=l;end;elseif G<=48 then do return end;elseif G==49 then n[e[2]]=n[e[3]]/T[e[5]];else local d;local Y;local G;local X;local c;n[e[2]]=n[e[3]]%T[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]]+T[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];c=e[2];X={};G=0;Y=c+e[3]-1;for e=c+1,Y do G=G+1;X[G]=n[e];end;d={n[c](a(X,1,Y-c))};Y=c+e[5]-2;G=0;for e=c,Y do G=G+1;n[e]=d[G];end;U=Y;l=l+1;e=o[l];n[e[2]]=n[e[3]][n[e[5]]];end;elseif G<=58 then if G<=54 then if G<=52 then if G==51 then n[e[2]]={};else n[e[2]]=n[e[3]][T[e[5]]];end;elseif G==53 then n[e[2]]=n[e[3]][n[e[5]]];else n[e[2]]=T[e[3]];end;elseif G<=56 then if G==55 then n[e[2]]={};else local o=e[2];n[o]=n[o]-n[o+2];l=l+e[3];end;elseif G>57 then local o=e[2];n[o]=n[o]-n[o+2];l=l+e[3];else n[e[2]]=n[e[3]]%T[e[5]];end;elseif G<=62 then if G<=60 then if G>59 then n[e[2]]=n[e[3]]-T[e[5]];else n[e[2]]=n[e[3]][T[e[5]]];end;elseif G>61 then n[e[2]]=X[T[e[3]]];else n[e[2]]=X[T[e[3]]];end;elseif G<=64 then if G==63 then local d;local Y;local G;local X;local c;n[e[2]]=n[e[3]]%T[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]]+T[e[5]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];c=e[2];X={};G=0;Y=c+e[3]-1;for e=c+1,Y do G=G+1;X[G]=n[e];end;d={n[c](a(X,1,Y-c))};Y=c+e[5]-2;G=0;for e=c,Y do G=G+1;n[e]=d[G];end;U=Y;l=l+1;e=o[l];n[e[2]]=n[e[3]][n[e[5]]];else n[e[2]]=#n[e[3]];end;elseif G<=65 then n[e[2]]=T[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=n[e[3]];l=l+1;e=o[l];n[e[2]]=T[e[3]];l=l+1;e=o[l];n[e[2]]=X[T[e[3]]];l=l+1;e=o[l];n[e[2]]=n[e[3]][T[e[5]]];l=l+1;e=o[l];n[e[2]]=X[T[e[3]]];l=l+1;e=o[l];n[e[2]]=n[e[3]][T[e[5]]];elseif G>66 then n[e[2]]=n[e[3]]+n[e[5]];else if(n[e[2]]>=n[e[5]])then l=l+1;else l=l+e[3];end;end;l=l+1;end;end;end;return W(H(),{},f())();
+
+local httpService = game:GetService('HttpService')
+local ThemeManager = {} do
+	ThemeManager.Folder = 'LinoriaLibSettings'
+	-- if not isfolder(ThemeManager.Folder) then makefolder(ThemeManager.Folder) end
+
+	ThemeManager.Library = nil
+	ThemeManager.BuiltInThemes = {
+        	['AstralTS'] = { 1, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"000000","AccentColor":"6000ff","BackgroundColor":"141414","OutlineColor":"323232"}') },
+		['Default'] 		= { 2, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1c1c1c","AccentColor":"0055ff","BackgroundColor":"141414","OutlineColor":"323232"}') },
+		['Green'] 			= { 4, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"141414","AccentColor":"00ff8b","BackgroundColor":"1c1c1c","OutlineColor":"3c3c3c"}') },
+		['Jester'] 			= { 5, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"db4467","BackgroundColor":"1c1c1c","OutlineColor":"373737"}') },
+		['Mint'] 			= { 6, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"3db488","BackgroundColor":"1c1c1c","OutlineColor":"373737"}') },
+		['Tokyo Night'] 	= { 7, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"191925","AccentColor":"6759b3","BackgroundColor":"16161f","OutlineColor":"323232"}') },
+		['Ubuntu'] 			= { 8, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"3e3e3e","AccentColor":"e2581e","BackgroundColor":"323232","OutlineColor":"191919"}') },
+	}
+
+	function ThemeManager:ApplyTheme(theme)
+		local customThemeData = self:GetCustomTheme(theme)
+		local data = customThemeData or self.BuiltInThemes[theme]
+
+		if not data then return end
+
+		-- custom themes are just regular dictionaries instead of an array with { index, dictionary }
+
+		local scheme = data[2]
+		for idx, col in next, customThemeData or scheme do
+			self.Library[idx] = Color3.fromHex(col)
+			
+			if Options[idx] then
+				Options[idx]:SetValueRGB(Color3.fromHex(col))
+			end
+		end
+
+		self:ThemeUpdate()
+	end
+
+	function ThemeManager:ThemeUpdate()
+		-- This allows us to force apply themes without loading the themes tab :)
+		local options = { "FontColor", "MainColor", "AccentColor", "BackgroundColor", "OutlineColor" }
+		for i, field in next, options do
+			if Options and Options[field] then
+				self.Library[field] = Options[field].Value
+			end
+		end
+
+		self.Library.AccentColorDark = self.Library:GetDarkerColor(self.Library.AccentColor);
+		self.Library:UpdateColorsUsingRegistry()
+	end
+
+	function ThemeManager:LoadDefault()		
+		local theme = 'Float'
+		local content = isfile(self.Folder .. '/themes/default.txt') and readfile(self.Folder .. '/themes/default.txt')
+
+		local isDefault = true
+		if content then
+			if self.BuiltInThemes[content] then
+				theme = content
+			elseif self:GetCustomTheme(content) then
+				theme = content
+				isDefault = false;
+			end
+		elseif self.BuiltInThemes[self.DefaultTheme] then
+		 	theme = self.DefaultTheme
+		end
+
+		if isDefault then
+			Options.ThemeManager_ThemeList:SetValue(theme)
+		else
+			self:ApplyTheme(theme)
+		end
+	end
+
+	function ThemeManager:SaveDefault(theme)
+		writefile(self.Folder .. '/themes/default.txt', theme)
+	end
+
+	function ThemeManager:CreateThemeManager(groupbox)
+		groupbox:AddLabel('Background color'):AddColorPicker('BackgroundColor', { Default = self.Library.BackgroundColor });
+		groupbox:AddLabel('Main color')	:AddColorPicker('MainColor', { Default = self.Library.MainColor });
+		groupbox:AddLabel('Accent color'):AddColorPicker('AccentColor', { Default = self.Library.AccentColor });
+		groupbox:AddLabel('Outline color'):AddColorPicker('OutlineColor', { Default = self.Library.OutlineColor });
+		groupbox:AddLabel('Font color')	:AddColorPicker('FontColor', { Default = self.Library.FontColor });
+
+		local ThemesArray = {}
+		for Name, Theme in next, self.BuiltInThemes do
+			table.insert(ThemesArray, Name)
+		end
+
+		table.sort(ThemesArray, function(a, b) return self.BuiltInThemes[a][1] < self.BuiltInThemes[b][1] end)
+
+		groupbox:AddDivider()
+		groupbox:AddDropdown('ThemeManager_ThemeList', { Text = 'Theme list', Values = ThemesArray, Default = 1 })
+
+		groupbox:AddButton('Set as default', function()
+			self:SaveDefault(Options.ThemeManager_ThemeList.Value)
+			self.Library:Notify(string.format('Set default theme to %q', Options.ThemeManager_ThemeList.Value),3)
+		end)
+
+		Options.ThemeManager_ThemeList:OnChanged(function()
+			self:ApplyTheme(Options.ThemeManager_ThemeList.Value)
+		end)
+
+		groupbox:AddDivider()
+		groupbox:AddDropdown('ThemeManager_CustomThemeList', { Text = 'Custom themes', Values = self:ReloadCustomThemes(), AllowNull = true, Default = 1 })
+		groupbox:AddInput('ThemeManager_CustomThemeName', { Text = 'Custom theme name' })
+
+		groupbox:AddButton('Load custom theme', function() 
+			self:ApplyTheme(Options.ThemeManager_CustomThemeList.Value) 
+		end)
+
+		groupbox:AddButton('Save custom theme', function() 
+			self:SaveCustomTheme(Options.ThemeManager_CustomThemeName.Value)
+
+			Options.ThemeManager_CustomThemeList.Values = self:ReloadCustomThemes()
+			Options.ThemeManager_CustomThemeList:SetValues()
+			Options.ThemeManager_CustomThemeList:SetValue(nil)
+		end)
+
+		groupbox:AddButton('Refresh list', function()
+			Options.ThemeManager_CustomThemeList.Values = self:ReloadCustomThemes()
+			Options.ThemeManager_CustomThemeList:SetValues()
+			Options.ThemeManager_CustomThemeList:SetValue(nil)
+		end)
+
+		groupbox:AddButton('Set as default', function()
+			if Options.ThemeManager_CustomThemeList.Value ~= nil and Options.ThemeManager_CustomThemeList.Value ~= '' then
+				self:SaveDefault(Options.ThemeManager_CustomThemeList.Value)
+				self.Library:Notify(string.format('Set default theme to %q', Options.ThemeManager_CustomThemeList.Value),3)
+			end
+		end)
+
+		ThemeManager:LoadDefault()
+
+		local function UpdateTheme()
+			self:ThemeUpdate()
+		end
+
+		Options.BackgroundColor:OnChanged(UpdateTheme)
+		Options.MainColor:OnChanged(UpdateTheme)
+		Options.AccentColor:OnChanged(UpdateTheme)
+		Options.OutlineColor:OnChanged(UpdateTheme)
+		Options.FontColor:OnChanged(UpdateTheme)
+	end
+
+	function ThemeManager:GetCustomTheme(file)
+		local path = self.Folder .. '/themes/' .. file
+		if not isfile(path) then
+			return nil
+		end
+
+		local data = readfile(path)
+		local success, decoded = pcall(httpService.JSONDecode, httpService, data)
+		
+		if not success then
+			return nil
+		end
+
+		return decoded
+	end
+
+	function ThemeManager:SaveCustomTheme(file)
+		if file:gsub(' ', '') == '' then
+			return self.Library:Notify('Invalid file name for theme (empty)', 3)
+		end
+
+		local theme = {}
+		local fields = { "FontColor", "MainColor", "AccentColor", "BackgroundColor", "OutlineColor" }
+
+		for _, field in next, fields do
+			theme[field] = Options[field].Value:ToHex()
+		end
+
+		writefile(self.Folder .. '/themes/' .. file .. '.json', httpService:JSONEncode(theme))
+	end
+
+	function ThemeManager:ReloadCustomThemes()
+		local list = listfiles(self.Folder .. '/themes')
+
+		local out = {}
+		for i = 1, #list do
+			local file = list[i]
+			if file:sub(-5) == '.json' then
+				-- i hate this but it has to be done ...
+
+				local pos = file:find('.json', 1, true)
+				local char = file:sub(pos, pos)
+
+				while char ~= '/' and char ~= '\\' and char ~= '' do
+					pos = pos - 1
+					char = file:sub(pos, pos)
+				end
+
+				if char == '/' or char == '\\' then
+					table.insert(out, file:sub(pos + 1))
+				end
+			end
+		end
+
+		return out
+	end
+
+	function ThemeManager:SetLibrary(lib)
+		self.Library = lib
+	end
+
+	function ThemeManager:BuildFolderTree()
+		local paths = {}
+
+		-- build the entire tree if a path is like some-hub/phantom-forces
+		-- makefolder builds the entire tree on Synapse X but not other exploits
+
+		local parts = self.Folder:split('/')
+		for idx = 1, #parts do
+			paths[#paths + 1] = table.concat(parts, '/', 1, idx)
+		end
+
+		table.insert(paths, self.Folder .. '/themes')
+		table.insert(paths, self.Folder .. '/settings')
+
+		for i = 1, #paths do
+			local str = paths[i]
+			if not isfolder(str) then
+				makefolder(str)
+			end
+		end
+	end
+
+	function ThemeManager:SetFolder(folder)
+		self.Folder = folder
+		self:BuildFolderTree()
+	end
+
+	function ThemeManager:CreateGroupBox(tab)
+		assert(self.Library, 'Must set ThemeManager.Library first!')
+		return tab:AddLeftGroupbox('Themes')
+	end
+
+	function ThemeManager:ApplyToTab(tab)
+		assert(self.Library, 'Must set ThemeManager.Library first!')
+		local groupbox = self:CreateGroupBox(tab)
+		self:CreateThemeManager(groupbox)
+	end
+
+	function ThemeManager:ApplyToGroupbox(groupbox)
+		assert(self.Library, 'Must set ThemeManager.Library first!')
+		self:CreateThemeManager(groupbox)
+	end
+
+	ThemeManager:BuildFolderTree()
+end
+return ThemeManager
