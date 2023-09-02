@@ -1121,7 +1121,7 @@ function Neverlose_Main:Window(config)
     ToggledFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
     ToggledFrame.BorderSizePixel = 0
     ToggledFrame.Position = UDim2.new(0.00789993443, 0, 0.0419753082, 0)
-    ToggledFrame.Size = UDim2.new(0, 151, 0, 190)
+    ToggledFrame.Size = UDim2.new(0, 151, 0, 166)
     ToggledFrame.Visible = false
 
     ToggledFrameLayout.Name = "ToggledFrameLayout"
@@ -1628,6 +1628,7 @@ function Neverlose_Main:Window(config)
             AutoClose = true
         })
         ToggledFrame.Visible = true
+			warn("its correct")
     end)
     
     BindsOnCorner.CornerRadius = UDim.new(3, 0)
